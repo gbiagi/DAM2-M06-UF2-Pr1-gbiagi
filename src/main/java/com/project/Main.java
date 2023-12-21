@@ -106,10 +106,38 @@ public class Main {
     }
     public static void mostrarTaula(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
-        String sql = "tables";
+        String menu = "Escull la taula:\n1) Faccio\n2) Personatge\n";
+        System.out.println(menu);
+        int opcio = Integer.valueOf(llegirLinia("Opció:"));
+        String taula = "";
+        switch (opcio) {
+            case 1:
+                taula = "Faccio";
+                break;
+            case 2:
+                taula = "Personatge";
+                break;
+            default:
+                System.out.println("Opció incorrecta");
+                break;
+        }
+        String sql = "Select * from " + taula + ";";
+
         ResultSet rs = stmt.executeQuery(sql);
-        while (rs.next()) {
-            System.out.println(rs.getString(1));
+        if (taula.equals("Faccio")) {
+            while (rs.next()) {
+                System.out.println("ID:" + rs.getInt(1));
+                System.out.println("Nom: " + rs.getString(2));
+                System.out.println("Resum: " + rs.getString(3));
+            }
+        } else {
+            while (rs.next()) {
+                System.out.println("ID:" + rs.getInt(1));
+                System.out.println("Nom: " + rs.getString(2));
+                System.out.println("Atac: " + rs.getFloat(3));
+                System.out.println("Defensa: " + rs.getFloat(4));
+                System.out.println("ID Faccio: " + rs.getInt(5));
+            }
         }
         rs.close();
         stmt.close();
